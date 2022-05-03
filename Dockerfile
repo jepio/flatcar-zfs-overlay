@@ -10,7 +10,7 @@ COPY repos.conf /etc/portage/repos.conf/zfs.conf
 COPY overlay /var/lib/portage/zfs-overlay/
 
 FROM base AS builder
-RUN emerge -j4 --getbinpkg --autounmask-write --autounmask-continue --onlydeps zfs
+RUN kernel=$(ls /lib/modules) && KBUILD_OUTPUT=/lib/modules/${kernel}/build KERNEL_DIR=/lib/modules/${kernel}/source emerge -j4 --getbinpkg --onlydeps zfs
 RUN emerge -j4 --getbinpkg --buildpkgonly zfs squashfs-tools
 
 FROM base AS staging
