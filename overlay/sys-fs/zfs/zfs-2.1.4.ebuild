@@ -34,7 +34,7 @@ LICENSE="BSD-2 CDDL MIT"
 # possible candidates: libuutil, libzpool, libnvpair. Those do not provide stable abi, but are considered.
 # see libsoversion_check() below as well
 SLOT="0/5"
-IUSE="custom-cflags debug dist-kernel kernel-builtin minimal nls pam python +rootfs test-suite"
+IUSE="custom-cflags debug dist-kernel kernel-builtin +minimal nls pam python rootfs test-suite"
 
 DEPEND="
 	net-libs/libtirpc:=
