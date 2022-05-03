@@ -20,7 +20,6 @@ RUN pkgs=$(emerge 2>/dev/null --usepkgonly --pretend zfs| awk -F'] ' '/binary/{ 
 RUN mkdir -p /work/usr/lib/extension-release.d && echo -e 'ID=flatcar\nSYSEXT_LEVEL=1.0' >/work/usr/lib/extension-release.d/extension-release.zfs
 RUN mkdir -p /work/usr/src
 RUN mv /work/etc /work/usr/etc
-COPY usr /work/usr
 RUN mkdir -p /output && mksquashfs /work /output/zfs.raw -noappend
 
 FROM busybox
