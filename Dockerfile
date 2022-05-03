@@ -16,10 +16,13 @@ RUN emerge -j4 --getbinpkg --buildpkgonly zfs squashfs-tools
 FROM base AS staging
 COPY --from=builder /var/lib/portage/pkgs /var/lib/portage/pkgs
 RUN emerge --getbinpkg --usepkg squashfs-tools
+# minimal baselayout compat
+RUN mkdir -p /work ; for dir in lib lib64 bin sbin; do mkdir -p /work/usr/$dir; ln -s usr/$dir /work/$dir; done
 RUN pkgs=$(emerge 2>/dev/null --usepkgonly --pretend zfs| awk -F'] ' '/binary/{ print $ 2 }' | awk '{ print "="$1 }'); emerge --usepkgonly --root=/work --nodeps $pkgs
 RUN mkdir -p /work/usr/lib/extension-release.d && echo -e 'ID=flatcar\nSYSEXT_LEVEL=1.0' >/work/usr/lib/extension-release.d/extension-release.zfs
 RUN mkdir -p /work/usr/src
 RUN mv /work/etc /work/usr/etc
+COPY usr /work/usr
 RUN mkdir -p /output && mksquashfs /work /output/zfs.raw -noappend
 
 FROM busybox
